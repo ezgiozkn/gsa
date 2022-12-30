@@ -179,79 +179,27 @@ public class ManageTrainingPackageHandler {
 
     public Map<Integer, TrainingPackage> savePackages(TrainingPackage trainingPackage) {
         try {
-            ObjectInputStream stream = new ObjectInputStream(new FileInputStream("packages.dat"));
-            Throwable var38 = null;
             ObjectOutputStream wstream = new ObjectOutputStream(new FileOutputStream("packages.dat"));
             Throwable var3 = null;
 
-            try {
-                this.packages = (Map) stream.readObject();
-            } catch (Throwable var32) {
-                var38 = var32;
-                throw var32;
-            } finally {
-                if (stream != null) {
-                    if (var38 != null) {
-                        try {
-                            stream.close();
-                        } catch (Throwable var31) {
-                            var38.addSuppressed(var31);
-                        }
-                    } else {
-                        if (this.packages == null) {
-                            this.packages = new HashMap();
-                        } else {
-                            this.packages.put(Integer.parseInt(trainingPackage.getPackageID()),trainingPackage);
-                        }
 
-                        wstream.writeObject(this.packages);
-                        stream.close();
-                    }
-                }
-
+            if (this.packages == null) {
+                this.packages = new HashMap();
+            } else {
+                this.packages.put(Integer.parseInt(trainingPackage.getPackageID()), trainingPackage);
             }
-        } catch (FileNotFoundException var36) {
-            try {
-                ObjectOutputStream stream = new ObjectOutputStream(new FileOutputStream("packages.dat"));
-                Throwable var3 = null;
 
-                try {
-                    if (this.packages == null) {
-                        this.packages = new HashMap();
-                    } else {
-                        this.packages.put(Integer.parseInt(trainingPackage.getPackageID()),trainingPackage);
-                    }
-
-                    stream.writeObject(this.packages);
-                } catch (Throwable var30) {
-                    var3 = var30;
-                    throw var30;
-                } finally {
-                    if (stream != null) {
-                        if (var3 != null) {
-                            try {
-                                stream.close();
-                            } catch (Throwable var29) {
-                                var3.addSuppressed(var29);
-                            }
-                        } else {
-                            stream.close();
-                        }
-                    }
-                }
-            } catch (Exception var34) {
-                var34.printStackTrace();
-                System.exit(0);
-            }
-        } catch (Exception var37) {
-            var37.printStackTrace();
-            System.exit(0);
+            wstream.writeObject(this.packages);
+            wstream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
         return this.packages;
-
     }
-    public TrainingPackage getPackage(int packageID){
+
+    public TrainingPackage getPackage(int packageID) {
         return this.packages.get(packageID);
     }
 }

@@ -62,7 +62,7 @@ public class App {
         while (!validCommand) {
             System.out.println("Enter the number of command you want to perform: ");
             System.out.println("1 - Manage Memberships");
-            System.out.println("2 - Not Ready, please don't choose!");
+            System.out.println("2 - Manage Training Session");
             command = scanner.nextLine();
             if (null == command) {
                 System.out.println("Invalid command!");
@@ -91,6 +91,7 @@ public class App {
             System.out.println("3 - Delete Package");
             System.out.println("4 - Back");
             System.out.println("5 - Exit");
+            System.out.print("Enter option: ");
             command = scanner.nextLine();
             if ("1".equals(command)) {
                 System.out.println("packageID" + "\t" +"memberName" + "\t" + "description"+  "\t" + "totalCount" + "\t" + "completedSession"  );
@@ -140,7 +141,7 @@ public class App {
             String option = scanner.nextLine();
 
             if (option.equals("1")) {
-                System.out.print("Enter Session: ");
+                System.out.print("Enter Session ID: ");
                 scanner.reset();
                 String sessionId = scanner.nextLine();
                 System.out.print("Enter day: ");
@@ -160,7 +161,7 @@ public class App {
                 trainingSessionHandler.saveBooking(trainingSession);
                 System.out.println("kayit OK");
 
-            } else if (option.equals(2)) {
+            } else if (option.equals("2")) {
                 System.out.print("Enter session to cancel: ");
                 String sessionIndex = scanner.nextLine();
                 TrainingSession session = trainingSessionHandler.readBooking().get(Integer.parseInt(sessionIndex));
@@ -174,7 +175,7 @@ public class App {
                 manageTrainingPackageHandler.savePackages(trainingPackage);
                 trainingSessionHandler.deleteBooking(Integer.parseInt(sessionIndex));
                 System.out.println("kayit Delete OK");
-            } else if (option.equals(3)) {
+            } else if (option.equals("3")) {
                 System.out.print("Enter Session ID: ");
                 String sessionId = scanner.nextLine();
                 System.out.print("Enter day: ");
@@ -185,13 +186,14 @@ public class App {
                 session.setDay(day);
                 session.setHour(hour);
                 trainingSessionHandler.saveBooking(session);
-            } else if (option.equals(4)) {
+            } else if (option.equals("4")) {
                 for (int i = 0; i < trainingSessionHandler.readBooking().size(); i++) {
-                    TrainingSession session = trainingSessionHandler.readBooking().get(i);
-                    System.out.println(session.getSessionId() + "\t\t\t"  + session.getDay()  + "\t\t\t" +session.getHour() + "\t\t\t" + session.getPackageID());
+                    TrainingSession session = trainingSessionHandler.readBooking().get(i+1);
+                    System.out.println("SessionID" + "\t" +"Day" + "\t\t" + "Hour"+  "\t" + "PackageID" );
+                    System.out.println(session.getSessionId() + "\t\t\t"  + session.getDay()  + "\t\t" +session.getHour() + "\t\t" + session.getPackageID());
                 }
-            } else if (option.equals(5)) {
-                break;
+            } else if (option.equals("5")) {
+                exitCommand=true;
             }
         }
         return command;

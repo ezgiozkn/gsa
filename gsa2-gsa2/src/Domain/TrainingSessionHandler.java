@@ -117,77 +117,26 @@ public class TrainingSessionHandler {
 
         return this.book;
     }
+
     public Map<Integer, TrainingSession> saveBooking(TrainingSession trainingSession) {
         try {
-            ObjectInputStream stream = new ObjectInputStream(new FileInputStream("booking.dat"));
-            Throwable var38 = null;
-
             ObjectOutputStream wstream = new ObjectOutputStream(new FileOutputStream("booking.dat"));
             Throwable var3 = null;
 
-            try {
-                this.book = (Map) stream.readObject();
-            } catch (Throwable var32) {
-                var38 = var32;
-                throw var32;
-            } finally {
-                if (stream != null) {
-                    if (var38 != null) {
-                        try {
-                            stream.close();
-                        } catch (Throwable var31) {
-                            var38.addSuppressed(var31);
-                        }
-                    } else {
-                        if (this.book == null) {
-                            this.book = new HashMap();
-                        }else {
-                            this.book.put(Integer.parseInt(trainingSession.getSessionId()),trainingSession);
-                        }
-
-                        wstream.writeObject(this.book);
-                        stream.close();
-                    }
-                }
-
+            if (this.book == null) {
+                this.book = new HashMap();
+            } else {
+                this.book.put(Integer.parseInt(trainingSession.getSessionId()), trainingSession);
             }
-        } catch (FileNotFoundException var36) {
-            try {
-                ObjectOutputStream stream = new ObjectOutputStream(new FileOutputStream("booking.dat"));
-                Throwable var3 = null;
 
-                try {
-                    if (this.book == null) {
-                        this.book = new HashMap();
-                    }else {
-                        this.book.put(Integer.parseInt(trainingSession.getSessionId()),trainingSession);
-                    }
-
-                    stream.writeObject(this.book);
-                } catch (Throwable var30) {
-                    var3 = var30;
-                    throw var30;
-                } finally {
-                    if (stream != null) {
-                        if (var3 != null) {
-                            try {
-                                stream.close();
-                            } catch (Throwable var29) {
-                                var3.addSuppressed(var29);
-                            }
-                        } else {
-                            stream.close();
-                        }
-                    }
-                }
-            } catch (Exception var34) {
-                var34.printStackTrace();
-                System.exit(0);
-            }
-        } catch (Exception var37) {
-            var37.printStackTrace();
-            System.exit(0);
+            wstream.writeObject(this.book);
+            wstream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
 
         return this.book;
 

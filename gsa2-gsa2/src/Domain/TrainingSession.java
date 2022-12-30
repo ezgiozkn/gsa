@@ -1,5 +1,8 @@
 package Domain;
-public class TrainingSession {
+
+import java.io.Serializable;
+
+public class TrainingSession implements Serializable {
 
     private String sessionId;
     private String day;
